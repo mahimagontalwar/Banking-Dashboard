@@ -1,33 +1,42 @@
-// Initial balance set to $1,000
-let balance = 1000.00;
+document.addEventListener("DOMContentLoaded", function() {
+    let balance = 1000;
+    const balanceElement = document.getElementById('balance');
+    const depositBtn = document.getElementById('depositBtn');
+    const withdrawBtn = document.getElementById('withdrawBtn');
 
-// Function to update the displayed balance
-function updateBalanceDisplay() {
-    document.getElementById('balance').textContent = balance.toFixed(2);
-}
-
-// Function to handle deposits
-function deposit() {
-    const depositAmount = parseFloat(document.getElementById('deposit-amount').value);
-    if (depositAmount > 0) {
-        balance += depositAmount;
-        updateBalanceDisplay();
-        document.getElementById('deposit-amount').value = ''; // Clear the input field
-    } else {
-        alert('Please enter a valid amount to deposit.');
+    // Update the balance display
+    function updateBalance() {
+        balanceElement.textContent = balance.toFixed(2);
     }
-}
 
-// Function to handle withdrawals
-function withdraw() {
-    const withdrawAmount = parseFloat(document.getElementById('withdraw-amount').value);
-    if (withdrawAmount > 0 && withdrawAmount <= balance) {
-        balance -= withdrawAmount;
-        updateBalanceDisplay();
-        document.getElementById('withdraw-amount').value = ''; // Clear the input field
-    } else if (withdrawAmount > balance) {
-        alert('Insufficient balance.');
-    } else {
-        alert('Please enter a valid amount to withdraw.');
-    }
-}
+    // Handle deposit action
+    depositBtn.addEventListener('click', function() {
+        const depositAmount = parseFloat(document.getElementById('depositAmount').value);
+        if (depositAmount > 0) {
+            balance += depositAmount;
+            updateBalance();
+            document.getElementById('depositAmount').value = '';
+        } else {
+            alert('Please enter a valid deposit amount.');
+        }
+    });
+
+    // Handle withdraw action
+    withdrawBtn.addEventListener('click', function() {
+        const withdrawAmount = parseFloat(document.getElementById('withdrawAmount').value);
+        if (withdrawAmount > 0) {
+            if (withdrawAmount <= balance) {
+                balance -= withdrawAmount;
+                updateBalance();
+            } else {
+                alert('Insufficient balance. Please enter a smaller amount.');
+            }
+            document.getElementById('withdrawAmount').value = '';
+        } else {
+            alert('Please enter a valid withdrawal amount.');
+        }
+    });
+
+    // Initialize the balance
+    updateBalance();
+});
